@@ -126,35 +126,35 @@ namespace CurrencyManager.UnitTest
         }
 
         [TestMethod]
-        public void CanChange_WithNotManagedCurrency_ShouldReturnFalse()
+        public void CanChangeFrom_WithNotManagedCurrency_ShouldReturnFalse()
         {
             var exchangeRate = ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
 
-            Assert.IsFalse(exchangeRate.CanChange(CURRENCY_NAME_2));
+            Assert.IsFalse(exchangeRate.IsManagedInitialeCurrency(CURRENCY_NAME_2));
         }
 
         [TestMethod]
-        public void CanChange_WithManagedCurrency_ShouldReturnTrue()
+        public void CanChangeFrom_WithManagedCurrency_ShouldReturnTrue()
         {
             var exchangeRate = ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
 
-            Assert.IsTrue(exchangeRate.CanChange(CURRENCY_NAME_1));
+            Assert.IsTrue(exchangeRate.IsManagedInitialeCurrency(CURRENCY_NAME_1));
         }
 
         [TestMethod]
-        public void CanChangeBack_WithNotManagedCurrency_ShouldReturnFalse()
+        public void CanChangeTo_WithNotManagedCurrency_ShouldReturnFalse()
         {
             var exchangeRate = ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
 
-            Assert.IsFalse(exchangeRate.CanChangeBack(CURRENCY_NAME_1));
+            Assert.IsFalse(exchangeRate.IsManagedTargetCurrency(CURRENCY_NAME_1));
         }
 
         [TestMethod]
-        public void CanChangeBack_WithManagedCurrency_ShouldReturnTrue()
+        public void CanChangeTo_WithManagedCurrency_ShouldReturnTrue()
         {
             var exchangeRate = ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
 
-            Assert.IsTrue(exchangeRate.CanChangeBack(CURRENCY_NAME_2));
+            Assert.IsTrue(exchangeRate.IsManagedTargetCurrency(CURRENCY_NAME_2));
         }
 
         private static IExchangeRate CreateWithRate(double rate)

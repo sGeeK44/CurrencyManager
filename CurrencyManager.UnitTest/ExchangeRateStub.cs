@@ -8,6 +8,9 @@ namespace CurrencyManager.UnitTest
         public string GoToCurrency { get; set; }
         public double Rate { get; set; }
         public double InvertRate { get; set; }
+        public bool IsManagedInitialeCurrencyResult { get; set; }
+        public bool IsManagedTargetCurrencyResult { get; set; }
+
         public double Change(double valueToChange)
         {
             throw new NotImplementedException();
@@ -18,14 +21,14 @@ namespace CurrencyManager.UnitTest
             throw new NotImplementedException();
         }
 
-        public bool CanChange(string currency)
+        public bool IsManagedInitialeCurrency(string initialCurrency)
         {
-            throw new NotImplementedException();
+            return IsManagedInitialeCurrencyResult;
         }
 
-        public bool CanChangeBack(string currency)
+        public bool IsManagedTargetCurrency(string targetCurrency)
         {
-            throw new NotImplementedException();
+            return IsManagedTargetCurrencyResult;
         }
     }
 }

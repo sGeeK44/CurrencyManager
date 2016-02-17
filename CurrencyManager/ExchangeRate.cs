@@ -113,23 +113,23 @@ namespace CurrencyManager
         }
 
         /// <summary>
-        /// Indicate if current exchange rate can change specified currency
+        /// Indicate if current exchange rate can change (or change back) from specified currency
         /// </summary>
-        /// <param name="currency">Currency to change</param>
+        /// <param name="initialCurrency">Initial currency to change (or change back)</param>
         /// <returns>True if it can, false else</returns>
-        public bool CanChange(string currency)
+        public bool IsManagedInitialeCurrency(string initialCurrency)
         {
-            return ComeFromCurrency.Equals(currency, StringComparison.OrdinalIgnoreCase);
+            return ComeFromCurrency.Equals(initialCurrency, StringComparison.OrdinalIgnoreCase);
         }
-        
+
         /// <summary>
-        /// Indicate if current exchange rate can change back specified currency
+        /// Indicate if current exchange rate can change (or change back) to specified currency
         /// </summary>
-        /// <param name="currency">Currency to change back</param>
+        /// <param name="targetCurrency">Target currency to change (or change back)</param>
         /// <returns>True if it can, false else</returns>
-        public bool CanChangeBack(string currency)
+        public bool IsManagedTargetCurrency(string targetCurrency)
         {
-            return GoToCurrency.Equals(currency, StringComparison.OrdinalIgnoreCase);
+            return GoToCurrency.Equals(targetCurrency, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

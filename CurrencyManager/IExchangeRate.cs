@@ -40,17 +40,17 @@
         double ChangeInvert(double valueToChange);
 
         /// <summary>
-        /// Indicate if current exchange rate can change specified currency
+        /// Indicate if current exchange rate can change (or change back) from specified currency
         /// </summary>
-        /// <param name="currency">Currency to change</param>
+        /// <param name="initialCurrency">Initial currency to change (or change back)</param>
         /// <returns>True if it can, false else</returns>
-        bool CanChange(string currency);
-        
+        bool IsManagedInitialeCurrency(string initialCurrency);
+
         /// <summary>
-        /// Indicate if current exchange rate can change back specified currency
+        /// Indicate if current exchange rate can change (or change back) to specified currency
         /// </summary>
-        /// <param name="currency">Currency to change back</param>
+        /// <param name="targetCurrency">Target currency to change (or change back)</param>
         /// <returns>True if it can, false else</returns>
-        bool CanChangeBack(string currency);
+        bool IsManagedTargetCurrency(string targetCurrency);
     }
 }
