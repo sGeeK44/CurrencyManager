@@ -8,7 +8,17 @@ namespace CurrencyManager
     public class ExchangeRate
     {
         private const int EXCHANGE_PRECISION = 4;
-        
+
+        /// <summary>
+        /// Get or set name of initial currency of a change
+        /// </summary>
+        public string ComeFromCurrency { get; set; }
+
+        /// <summary>
+        /// Get or set name target currency of a change
+        /// </summary>
+        public string GoToCurrency { get; set; }
+
         /// <summary>
         /// Get or Set current rate used to change money
         /// </summary>
