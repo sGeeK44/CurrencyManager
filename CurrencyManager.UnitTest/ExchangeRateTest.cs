@@ -2,9 +2,6 @@
 
 namespace CurrencyManager.UnitTest
 {
-    /// <summary>
-    /// Summary description for CurrencyExchangerTest
-    /// </summary>
     [TestClass]
     public class ExchangeRateTest
     {
