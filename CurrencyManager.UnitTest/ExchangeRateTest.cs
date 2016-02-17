@@ -125,6 +125,38 @@ namespace CurrencyManager.UnitTest
             Assert.IsFalse(exchangeRate2.Equals(exchangeRate1));
         }
 
+        [TestMethod]
+        public void CanChange_WithNotManagedCurrency_ShouldReturnFalse()
+        {
+            var exchangeRate = ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
+
+            Assert.IsFalse(exchangeRate.CanChange(CURRENCY_NAME_2));
+        }
+
+        [TestMethod]
+        public void CanChange_WithManagedCurrency_ShouldReturnTrue()
+        {
+            var exchangeRate = ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
+
+            Assert.IsTrue(exchangeRate.CanChange(CURRENCY_NAME_1));
+        }
+
+        [TestMethod]
+        public void CanChangeBack_WithNotManagedCurrency_ShouldReturnFalse()
+        {
+            var exchangeRate = ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
+
+            Assert.IsFalse(exchangeRate.CanChangeBack(CURRENCY_NAME_1));
+        }
+
+        [TestMethod]
+        public void CanChangeBack_WithManagedCurrency_ShouldReturnTrue()
+        {
+            var exchangeRate = ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
+
+            Assert.IsTrue(exchangeRate.CanChangeBack(CURRENCY_NAME_2));
+        }
+
         private static IExchangeRate CreateWithRate(double rate)
         {
             return ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, rate);

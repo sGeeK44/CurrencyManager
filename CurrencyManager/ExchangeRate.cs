@@ -111,5 +111,25 @@ namespace CurrencyManager
                 Rate = rate
             };
         }
+
+        /// <summary>
+        /// Indicate if current exchange rate can change specified currency
+        /// </summary>
+        /// <param name="currency">Currency to change</param>
+        /// <returns>True if it can, false else</returns>
+        public bool CanChange(string currency)
+        {
+            return ComeFromCurrency.Equals(currency, StringComparison.OrdinalIgnoreCase);
+        }
+        
+        /// <summary>
+        /// Indicate if current exchange rate can change back specified currency
+        /// </summary>
+        /// <param name="currency">Currency to change back</param>
+        /// <returns>True if it can, false else</returns>
+        public bool CanChangeBack(string currency)
+        {
+            return GoToCurrency.Equals(currency, StringComparison.OrdinalIgnoreCase);
+        }
     }
 }

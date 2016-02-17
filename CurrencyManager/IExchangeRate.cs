@@ -38,5 +38,19 @@
         /// <param name="valueToChange">Amount of money to change back</param>
         /// <returns>Changed back money</returns>
         double ChangeInvert(double valueToChange);
+
+        /// <summary>
+        /// Indicate if current exchange rate can change specified currency
+        /// </summary>
+        /// <param name="currency">Currency to change</param>
+        /// <returns>True if it can, false else</returns>
+        bool CanChange(string currency);
+        
+        /// <summary>
+        /// Indicate if current exchange rate can change back specified currency
+        /// </summary>
+        /// <param name="currency">Currency to change back</param>
+        /// <returns>True if it can, false else</returns>
+        bool CanChangeBack(string currency);
     }
 }
