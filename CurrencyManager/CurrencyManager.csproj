@@ -36,6 +36,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bank.cs" />
     <Compile Include="ExchangeRate.cs" />
     <Compile Include="IExchangeRate.cs" />
     <Compile Include="Program.cs" />

@@ -10,10 +10,11 @@ namespace CurrencyManager.UnitTest
         public double InvertRate { get; set; }
         public bool IsManagedInitialeCurrencyResult { get; set; }
         public bool IsManagedTargetCurrencyResult { get; set; }
+        public double ChangeResult { get; set; }
 
         public double Change(double valueToChange)
         {
-            throw new NotImplementedException();
+            return ChangeResult;
         }
 
         public double ChangeInvert(double valueToChange)
