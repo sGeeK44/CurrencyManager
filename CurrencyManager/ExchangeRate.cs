@@ -59,6 +59,9 @@ namespace CurrencyManager
         /// <param name="rate">Initial rate</param>
         public static IExchangeRate Create(string fromName, string toName, double rate)
         {
+            if (string.IsNullOrWhiteSpace(fromName)) throw new ArgumentNullException("fromName");
+            if (string.IsNullOrWhiteSpace(toName)) throw new ArgumentNullException("toName");
+
             return new ExchangeRate
             {
                 ComeFromCurrency = fromName,
