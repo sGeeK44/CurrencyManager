@@ -9,6 +9,8 @@ namespace CurrencyManager
     {
         private const int EXCHANGE_PRECISION = 4;
 
+        private ExchangeRate() { }
+
         /// <summary>
         /// Get or set name of initial currency of a change
         /// </summary>
@@ -30,15 +32,6 @@ namespace CurrencyManager
         public double InvertRate { get { return Math.Round(1 / Rate, EXCHANGE_PRECISION); } }
 
         /// <summary>
-        /// Create a new instance of ExchangeRate
-        /// </summary>
-        /// <param name="rate">Initial rate</param>
-        public ExchangeRate(double rate)
-        {
-            Rate = rate;
-        }
-
-        /// <summary>
         /// Change money with current rate
         /// </summary>
         /// <param name="valueToChange">Amount of money to change</param>
@@ -56,6 +49,22 @@ namespace CurrencyManager
         public double ChangeInvert(double valueToChange)
         {
             return Math.Round(valueToChange * InvertRate, EXCHANGE_PRECISION);
+        }
+
+        /// <summary>
+        /// Create a new instance of ExchangeRate
+        /// </summary>
+        /// <param name="fromName">Name of initial currency of a change</param>
+        /// <param name="toName">Name target currency of a change</param>
+        /// <param name="rate">Initial rate</param>
+        public static IExchangeRate Create(string fromName, string toName, double rate)
+        {
+            return new ExchangeRate
+            {
+                ComeFromCurrency = fromName,
+                GoToCurrency = toName,
+                Rate = rate
+            };
         }
     }
 }

@@ -8,7 +8,7 @@ namespace CurrencyManager.UnitTest
         [TestMethod]
         public void Change_From550With1Dot2053Rate_ShouldReturn662Dot9150()
         {
-            var exchangeRate = new ExchangeRate(1.2053);
+            var exchangeRate = ExchangeRate.Create(null, null, 1.2053);
             
             var exchangeValue = exchangeRate.Change(550);
 
@@ -18,14 +18,14 @@ namespace CurrencyManager.UnitTest
         [TestMethod]
         public void InvertRate_WhenRateEqual0Dot9661_InvertRateShouldEqual1Dot0351()
         {
-            var exchangeRate = new ExchangeRate(0.9661);
+            var exchangeRate = ExchangeRate.Create(null, null, 0.9661);
             Assert.AreEqual(1.0351, exchangeRate.InvertRate);
         }
 
         [TestMethod]
         public void ChangeInvert_From662Dot9150With0Dot9661Rate_ShouldReturn686Dot1833()
         {
-            var exchangeRate = new ExchangeRate(0.9661);
+            var exchangeRate = ExchangeRate.Create(null, null, 0.9661);
 
             var exchangeValue = exchangeRate.ChangeInvert(662.9150);
 
