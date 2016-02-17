@@ -6,6 +6,11 @@ namespace CurrencyManager.UnitTest
     [TestClass]
     public class ExchangeRateTest
     {
+        private const string CURRENCY_NAME = "CUR";
+        private const string CURRENCY_NAME_1 = "CUR1";
+        private const string CURRENCY_NAME_2 = "CUR2";
+        private const string CURRENCY_NAME_3 = "CUR3";
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_WithNullFromCurrencyName_ShouldThrowArgumentNullException()
@@ -31,21 +36,28 @@ namespace CurrencyManager.UnitTest
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_WithNullToCurrencyName_ShouldThrowArgumentNullException()
         {
-            ExchangeRate.Create("CUR", null, 0);
+            ExchangeRate.Create(CURRENCY_NAME, null, 0);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_WithEmptyToCurrencyName_ShouldThrowArgumentNullException()
         {
-            ExchangeRate.Create("CUR", string.Empty, 0);
+            ExchangeRate.Create(CURRENCY_NAME, string.Empty, 0);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Create_WithOnlyWhiteSpaceToCurrencyName_ShouldThrowArgumentNullException()
         {
-            ExchangeRate.Create("CUR", " ", 0);
+            ExchangeRate.Create(CURRENCY_NAME, " ", 0);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_WithSameFromAndToCurrencyName_ShouldThrowArgumentException()
+        {
+            ExchangeRate.Create(CURRENCY_NAME, CURRENCY_NAME, 0);
         }
 
         [TestMethod]
@@ -96,8 +108,8 @@ namespace CurrencyManager.UnitTest
         [TestMethod]
         public void Equals_WithSameCurrencyFromButNotTo_ShouldReturnFalse()
         {
-            var exchangeRate1 = ExchangeRate.Create("CUR1", "CUR2", 0);
-            var exchangeRate2 = ExchangeRate.Create("CUR1", "CUR3", 0);
+            var exchangeRate1 = ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
+            var exchangeRate2 = ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_3, 0);
 
             Assert.IsFalse(exchangeRate1.Equals(exchangeRate2));
             Assert.IsFalse(exchangeRate2.Equals(exchangeRate1));
@@ -106,8 +118,8 @@ namespace CurrencyManager.UnitTest
         [TestMethod]
         public void Equals_WithSameCurrencyToButNotFrom_ShouldReturnFalse()
         {
-            var exchangeRate1 = ExchangeRate.Create("CUR1", "CUR2", 0);
-            var exchangeRate2 = ExchangeRate.Create("CUR3", "CUR2", 0);
+            var exchangeRate1 = ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
+            var exchangeRate2 = ExchangeRate.Create(CURRENCY_NAME_3, CURRENCY_NAME_2, 0);
 
             Assert.IsFalse(exchangeRate1.Equals(exchangeRate2));
             Assert.IsFalse(exchangeRate2.Equals(exchangeRate1));
@@ -115,7 +127,7 @@ namespace CurrencyManager.UnitTest
 
         private static IExchangeRate CreateWithRate(double rate)
         {
-            return ExchangeRate.Create("CUR1", "CUR2", rate);
+            return ExchangeRate.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, rate);
         }
     }
 }

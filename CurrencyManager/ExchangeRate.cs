@@ -101,6 +101,8 @@ namespace CurrencyManager
         {
             if (string.IsNullOrWhiteSpace(fromName)) throw new ArgumentNullException("fromName");
             if (string.IsNullOrWhiteSpace(toName)) throw new ArgumentNullException("toName");
+            if (string.Equals(fromName, toName, StringComparison.OrdinalIgnoreCase))
+                throw new ArgumentException(string.Format("Initial currency have to be different from target change currency. Initial:{0}. Target:{1}.", fromName, toName));
 
             return new ExchangeRate
             {
