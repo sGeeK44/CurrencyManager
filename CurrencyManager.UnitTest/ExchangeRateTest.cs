@@ -75,6 +75,44 @@ namespace CurrencyManager.UnitTest
             Assert.AreEqual(686.1833, exchangeValue);
         }
 
+        [TestMethod]
+        public void Equals_WithNull_ShouldReturnFalse()
+        {
+            var exchangeRate1 = CreateWithRate(0);
+
+            Assert.IsFalse(exchangeRate1.Equals(null));
+        }
+
+        [TestMethod]
+        public void Equals_WithSameCurrencyFromAndTo_ShouldReturnTrue()
+        {
+            var exchangeRate1 = CreateWithRate(0);
+            var exchangeRate2 = CreateWithRate(0);
+
+            Assert.IsTrue(exchangeRate1.Equals(exchangeRate2));
+            Assert.IsTrue(exchangeRate2.Equals(exchangeRate1));
+        }
+
+        [TestMethod]
+        public void Equals_WithSameCurrencyFromButNotTo_ShouldReturnFalse()
+        {
+            var exchangeRate1 = ExchangeRate.Create("CUR1", "CUR2", 0);
+            var exchangeRate2 = ExchangeRate.Create("CUR1", "CUR3", 0);
+
+            Assert.IsFalse(exchangeRate1.Equals(exchangeRate2));
+            Assert.IsFalse(exchangeRate2.Equals(exchangeRate1));
+        }
+
+        [TestMethod]
+        public void Equals_WithSameCurrencyToButNotFrom_ShouldReturnFalse()
+        {
+            var exchangeRate1 = ExchangeRate.Create("CUR1", "CUR2", 0);
+            var exchangeRate2 = ExchangeRate.Create("CUR3", "CUR2", 0);
+
+            Assert.IsFalse(exchangeRate1.Equals(exchangeRate2));
+            Assert.IsFalse(exchangeRate2.Equals(exchangeRate1));
+        }
+
         private static IExchangeRate CreateWithRate(double rate)
         {
             return ExchangeRate.Create("CUR1", "CUR2", rate);
