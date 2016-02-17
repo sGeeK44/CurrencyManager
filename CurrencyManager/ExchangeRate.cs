@@ -5,7 +5,7 @@ namespace CurrencyManager
     /// <summary>
     /// Provide methods to change money with a specified rate
     /// </summary>
-    public class ExchangeRate
+    public class ExchangeRate : IExchangeRate
     {
         private const int EXCHANGE_PRECISION = 4;
 
