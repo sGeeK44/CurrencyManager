@@ -2,6 +2,9 @@
 
 namespace CurrencyManager
 {
+    /// <summary>
+    /// Represent a change which need intermediate change
+    /// </summary>
     public class ThroughExchange : IExchangeChain
     {
         private IExchangeCurrency _throughExchange;
@@ -9,17 +12,34 @@ namespace CurrencyManager
         private string _initialCurrency;
         private string _intermediateCurrency;
 
+        /// <summary>
+        /// Change money with current rate
+        /// </summary>
+        /// <param name="valueToChange">Amount of money to change</param>
+        /// <returns>Changed money</returns>
         public double Change(double valueToChange)
         {
             var intermediateChange = _throughExchange.Change(_initialCurrency, _intermediateCurrency, valueToChange);
             return _nextExchange.Change(intermediateChange);
         }
 
+        /// <summary>
+        /// Get number of intermediate change needed to complete change
+        /// </summary>
         public int CountIntermediateChangeNeeded()
         {
             return 1 + _nextExchange.CountIntermediateChangeNeeded();
         }
 
+
+        /// <summary>
+        /// Create a new instance of ThroughExchange
+        /// </summary>
+        /// <param name="initialCurrency">Initial currency to change</param>
+        /// <param name="targetCurrency">Target currency to expected</param>
+        /// <param name="throughExchange"></param>
+        /// <param name="availableExchangeExcludeCurrent">All avalaible exchange currency to chain with current</param>
+        /// <returns>Return new Direct Exchange</returns>
         internal static IExchangeChain Create(IExchangeCurrency throughExchange, string initialCurrency, string targetCurrency, List<IExchangeCurrency> availableExchangeExcludeCurrent)
         {
             string changeTo;

@@ -12,25 +12,6 @@ namespace CurrencyManager
         private string _targetCurrency;
 
         private DirectExchange() { }
-        
-        /// <summary>
-        /// Create a new instance of DirectExchange
-        /// </summary>
-        /// <param name="initialCurrency">Initial currency to change</param>
-        /// <param name="targetCurrency">Target currency to expected</param>
-        /// <param name="directExchangeCurrency"></param>
-        /// <returns></returns>
-        public static DirectExchange Create(IExchangeCurrency directExchangeCurrency, string initialCurrency, string targetCurrency)
-        {
-            if (directExchangeCurrency == null) throw new ArgumentNullException("directExchangeCurrency");
-
-            return new DirectExchange
-            {
-                _initialCurrency = initialCurrency,
-                _targetCurrency = targetCurrency,
-                _directExchangeCurrency = directExchangeCurrency
-            };
-        }
 
         /// <summary>
         /// Change money with current rate
@@ -48,6 +29,25 @@ namespace CurrencyManager
         public int CountIntermediateChangeNeeded()
         {
             return 1;
+        }
+
+        /// <summary>
+        /// Create a new instance of DirectExchange
+        /// </summary>
+        /// <param name="initialCurrency">Initial currency to change</param>
+        /// <param name="targetCurrency">Target currency to expected</param>
+        /// <param name="directExchangeCurrency"></param>
+        /// <returns>Return new Direct Exchange</returns>
+        public static IExchangeChain Create(IExchangeCurrency directExchangeCurrency, string initialCurrency, string targetCurrency)
+        {
+            if (directExchangeCurrency == null) throw new ArgumentNullException("directExchangeCurrency");
+
+            return new DirectExchange
+            {
+                _initialCurrency = initialCurrency,
+                _targetCurrency = targetCurrency,
+                _directExchangeCurrency = directExchangeCurrency
+            };
         }
     }
 }
