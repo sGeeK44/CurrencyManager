@@ -189,5 +189,43 @@ namespace CurrencyManager.UnitTest
 
             Assert.AreEqual(CURRENCY_NAME_1, changeTo);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Change_InitialCurrencyNotManaged_ThrowArgumentException()
+        {
+            var exchangeRate = (ExchangeCurrency)ExchangeCurrency.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
+
+            exchangeRate.Change(CURRENCY_NAME_3, CURRENCY_NAME_2, 0);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Change_TargetCurrencyNotManaged_ThrowArgumentException()
+        {
+            var exchangeRate = (ExchangeCurrency)ExchangeCurrency.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
+
+            exchangeRate.Change(CURRENCY_NAME_1, CURRENCY_NAME_3, 0);
+        }
+
+        [TestMethod]
+        public void Change_InitialFirstTargetSecond_ShouldReturnChangeExhangeRateValue()
+        {
+            const double expectedChangeResult = 3.14;
+            var exchangeRate = (ExchangeCurrency)ExchangeCurrency.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
+            exchangeRate.SetNewRate(new ExchangeRateStub{ ChangeResult = expectedChangeResult });
+
+            Assert.AreEqual(expectedChangeResult, exchangeRate.Change(CURRENCY_NAME_1, CURRENCY_NAME_2, 0));
+        }
+
+        [TestMethod]
+        public void Change_InitialSecondTargetFirst_ShouldReturnChangeExhangeRateValue()
+        {
+            const double expectedChangeResult = 3.14;
+            var exchangeRate = (ExchangeCurrency)ExchangeCurrency.Create(CURRENCY_NAME_1, CURRENCY_NAME_2, 0);
+            exchangeRate.SetNewRate(new ExchangeRateStub { ChangeBackResult = expectedChangeResult });
+
+            Assert.AreEqual(expectedChangeResult, exchangeRate.Change(CURRENCY_NAME_2, CURRENCY_NAME_1, 0));
+        }
     }
 }

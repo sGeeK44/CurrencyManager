@@ -19,6 +19,16 @@ namespace CurrencyManager
         }
 
         /// <summary>
+        /// Set new IExchangeRate to use for next change
+        /// </summary>
+        /// <param name="newRate">NewIExchange to use</param>
+        public void SetNewRate(IExchangeRate newRate)
+        {
+            if (newRate == null) throw new ArgumentNullException("newRate");
+            _rate = newRate;
+        }
+
+        /// <summary>
         /// Get current rate used to change money from initial currency to target
         /// </summary>
 
@@ -123,7 +133,8 @@ namespace CurrencyManager
         /// <returns>Changed money</returns>
         public double Change(string initialCurrency, string targetCurrency, double valueToChange)
         {
-            throw new NotImplementedException();
+            if (!CanChange(initialCurrency, targetCurrency)) throw new ArgumentException(string.Format("Specified change can not be done. Unmanaged currency. Initial:{0}. Target:{1}.", initialCurrency, targetCurrency));
+            return IsEqualToFirstCurrency(initialCurrency) ? _rate.Change(valueToChange) : _rate.ChangeBack(valueToChange);
         }
 
         /// <summary>
