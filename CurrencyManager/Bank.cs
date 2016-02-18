@@ -35,12 +35,10 @@ namespace CurrencyManager
         /// <returns>Changed money</returns>
         public int Change(string initialCurrency, string targetCurrency, int amount)
         {
-            if (string.IsNullOrEmpty(initialCurrency)) throw new ArgumentNullException("initialCurrency");
-            if (string.IsNullOrEmpty(targetCurrency)) throw new ArgumentNullException("targetCurrency");
             if (AvailableExchangeCurrency.Count == 0) throw new NotSupportedException(string.Format("Bank can not change from {0} to {1}. None exchange currency available.", initialCurrency, targetCurrency));
 
-            var factory = new ExchangeChainFactory(AvailableExchangeCurrency);
-            var exchangeChain = factory.Create(initialCurrency, targetCurrency);
+            var chainFactory = new ExchangeChainFactory(AvailableExchangeCurrency);
+            var exchangeChain = chainFactory.Create(initialCurrency, targetCurrency);
 
             if (exchangeChain == null) throw new NotSupportedException(string.Format("Bank can not change from {0} to {1}. None exchange currency corresponds to request change.", initialCurrency, targetCurrency));
             

@@ -44,7 +44,7 @@ namespace CurrencyManager.UnitTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(NotSupportedException))]
         public void Change_ExchangeRateNotPresent_ShouldThrowNotSuportedException()
         {
             var bank = new Bank();
