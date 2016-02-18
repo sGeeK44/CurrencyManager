@@ -6,10 +6,6 @@ namespace CurrencyManager.UnitTest
     [TestClass]
     public class BankTest
     {
-        private const string CURRENCY_NAME_1 = "CUR1";
-        private const string CURRENCY_NAME_2 = "CUR2";
-        private const string CURRENCY_NAME_3 = "CUR3";
-
         [TestMethod]
         public void ConstructorBank_AvailableExchangeRate_ShouldBeNotNull()
         {
