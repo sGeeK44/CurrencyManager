@@ -32,7 +32,8 @@ namespace CurrencyManager
                 var availableExchangeExcludeCurrent = new List<IExchangeCurrency>(AvailableExchangeCurrency);
                 availableExchangeExcludeCurrent.Remove(throughExchange);
 
-                result = ThroughExchange.Create(throughExchange, initialCurrency, targetCurrency, availableExchangeExcludeCurrent);
+                var newChain = ThroughExchange.Create(throughExchange, initialCurrency, targetCurrency, availableExchangeExcludeCurrent);
+                if (result == null || newChain != null && newChain.CountIntermediateChangeNeeded() < result.CountIntermediateChangeNeeded()) result = newChain;
             }
             return result;
         }

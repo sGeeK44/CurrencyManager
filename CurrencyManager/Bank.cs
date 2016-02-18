@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace CurrencyManager
 {
@@ -31,20 +32,21 @@ namespace CurrencyManager
         /// Change money with current rate
         /// </summary>
         /// <param name="initialCurrency">Name of initial currency of a change</param>
-        /// <param name="toCurrency">Name target currency of a change</param>
+        /// <param name="targetCurrency">Name target currency of a change</param>
         /// <param name="amount">Amount of money to change</param>
         /// <returns>Changed money</returns>
-        public int Change(string initialCurrency, string toCurrency, int amount)
+        public int Change(string initialCurrency, string targetCurrency, int amount)
         {
-            var exchangeCurrency = GetExchangeRate(initialCurrency, toCurrency);
-            if (exchangeCurrency == null) throw new NotSupportedException(string.Format("Bank can not change from {0} to {1}. None exchange currency available.", initialCurrency, toCurrency));
+            if (string.IsNullOrEmpty(initialCurrency)) throw new ArgumentNullException("initialCurrency");
+            if (string.IsNullOrEmpty(targetCurrency)) throw new ArgumentNullException("targetCurrency");
+            if (AvailableExchangeCurrency.Count == 0) throw new NotSupportedException(string.Format("Bank can not change from {0} to {1}. None exchange currency available.", initialCurrency, targetCurrency));
 
-            return (int)Math.Round(exchangeCurrency.Change(initialCurrency, toCurrency, amount));
-        }
+            var factory = new ExchangeChainFactory(AvailableExchangeCurrency);
+            var exchangeChain = factory.Create(initialCurrency, targetCurrency);
 
-        private IExchangeCurrency GetExchangeRate(string initialCurrency, string targetCurrency)
-        {
-            return AvailableExchangeCurrency.FirstOrDefault(_ => _.CanChange(initialCurrency, targetCurrency));
+            if (exchangeChain == null) throw new NotSupportedException(string.Format("Bank can not change from {0} to {1}. None exchange currency corresponds to request change.", initialCurrency, targetCurrency));
+            
+            return (int)Math.Round(exchangeChain.Change(amount));
         }
     }
 }
