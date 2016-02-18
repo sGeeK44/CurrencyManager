@@ -42,7 +42,12 @@ namespace CurrencyManager
 
             if (exchangeChain == null) throw new NotSupportedException(string.Format("Bank can not change from {0} to {1}. None exchange currency corresponds to request change.", initialCurrency, targetCurrency));
             
-            return (int)Math.Round(exchangeChain.Change(amount));
+            return RoundChangeToInteger(exchangeChain.Change(amount));
+        }
+
+        private static int RoundChangeToInteger(double change)
+        {
+            return (int) Math.Round(change);
         }
     }
 }
