@@ -5,3 +5,4 @@
 **/*.ncrunchproject
 **/*.ncrunchsolution
 _NCrunch_CurrencyManager
+*.ncrunchsolution
