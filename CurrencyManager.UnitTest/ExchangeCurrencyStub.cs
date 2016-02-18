@@ -2,9 +2,6 @@
 {
     public class ExchangeCurrencyStub : IExchangeCurrency
     {
-        public string InitialCurrency { get; set; }
-        public string TargetCurrency { get; set; }
-        public IExchangeRate Rate { get; set; }
         public double ChangeResult { get; set; }
         public bool CanChangeResult { get; set; }
         public string CanChangeFromOutParam { get; set; }
@@ -40,6 +37,11 @@
         public static ExchangeCurrencyStub CreateExchangeWichManageOnlyOneCurrency()
         {
             return new ExchangeCurrencyStub { CanOnlyMakeIntermediateChangeResult = true };
+        }
+
+        public static ExchangeCurrencyStub CreateExchangeWichCanDoNothing()
+        {
+            return new ExchangeCurrencyStub();
         }
     }
 }

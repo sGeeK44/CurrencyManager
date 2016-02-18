@@ -167,7 +167,7 @@ namespace CurrencyManager.UnitTest
             string changeTo;
             exchangeRate.CanChangeFrom(CURRENCY_NAME_1, out changeTo);
 
-            Assert.AreEqual(exchangeRate.TargetCurrency, changeTo);
+            Assert.AreEqual(CURRENCY_NAME_2, changeTo);
         }
 
         [TestMethod]
@@ -187,7 +187,7 @@ namespace CurrencyManager.UnitTest
             string changeTo;
             exchangeRate.CanChangeFrom(CURRENCY_NAME_2, out changeTo);
 
-            Assert.AreEqual(exchangeRate.InitialCurrency, changeTo);
+            Assert.AreEqual(CURRENCY_NAME_1, changeTo);
         }
     }
 }

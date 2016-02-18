@@ -6,21 +6,6 @@
     public interface IExchangeCurrency
     {
         /// <summary>
-        /// Get name of initial currency of a change
-        /// </summary>
-        string InitialCurrency { get; }
-
-        /// <summary>
-        /// Get name target currency of a change
-        /// </summary>
-        string TargetCurrency { get; }
-
-        /// <summary>
-        /// Get current rate used to change money from initial currency to target
-        /// </summary>
-        IExchangeRate Rate { get; }
-
-        /// <summary>
         /// Change money with current rate
         /// </summary>
         /// <param name="initialCurrency">Initial currency to change</param>

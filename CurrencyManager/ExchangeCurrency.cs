@@ -5,24 +5,22 @@ namespace CurrencyManager
     /// <summary>
     /// Provide methods to change money with a specified rate
     /// </summary>
-    public class ExchangeCurrency : IExchangeCurrency, IEquatable<IExchangeCurrency>
+    public class ExchangeCurrency : IExchangeCurrency, IEquatable<ExchangeCurrency>
     {
-        private ExchangeCurrency() { }
+        private readonly string _firstCurrency;
+        private readonly string _secondCurrency;
+        private IExchangeRate _rate;
 
-        /// <summary>
-        /// Get name of initial currency of a change
-        /// </summary>
-        public string InitialCurrency { get; set; }
-
-        /// <summary>
-        /// Get name target currency of a change
-        /// </summary>
-        public string TargetCurrency { get; set; }
+        private ExchangeCurrency(string initialCurrency, string targetCurrency, IExchangeRate rate)
+        {
+            _firstCurrency = initialCurrency;
+            _secondCurrency = targetCurrency;
+            _rate = rate;
+        }
 
         /// <summary>
         /// Get current rate used to change money from initial currency to target
         /// </summary>
-        public IExchangeRate Rate { get; set; }
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -33,7 +31,7 @@ namespace CurrencyManager
         /// <param name="obj">The object to compare with the current object. </param><filterpriority>2</filterpriority>
         public override bool Equals(object obj)
         {
-            return Equals(obj as IExchangeCurrency);
+            return Equals(obj as ExchangeCurrency);
         }
 
         /// <summary>
@@ -43,11 +41,11 @@ namespace CurrencyManager
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(IExchangeCurrency other)
+        public bool Equals(ExchangeCurrency other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return string.Equals(InitialCurrency, other.InitialCurrency) && string.Equals(TargetCurrency, other.TargetCurrency);
+            return string.Equals(_firstCurrency, other._firstCurrency) && string.Equals(_secondCurrency, other._secondCurrency);
         }
 
         /// <summary>
@@ -61,7 +59,7 @@ namespace CurrencyManager
         {
             unchecked
             {
-                return (InitialCurrency.GetHashCode() * 397) ^ TargetCurrency.GetHashCode();
+                return (_firstCurrency.GetHashCode() * 397) ^ _secondCurrency.GetHashCode();
             }
         }
 
@@ -85,15 +83,15 @@ namespace CurrencyManager
         /// <returns>True if it can, false else</returns>
         public bool CanChangeFrom(string currencyToChange, out string changeToCurrency)
         {
-            if (IsEqualToInitialeCurrency(currencyToChange))
+            if (IsEqualToFirstCurrency(currencyToChange))
             {
-                changeToCurrency = TargetCurrency;
+                changeToCurrency = _secondCurrency;
                 return true;
             }
 
-            if (IsEqualToTargetCurrency(currencyToChange))
+            if (IsEqualToSecondCurrency(currencyToChange))
             {
-                changeToCurrency = InitialCurrency;
+                changeToCurrency = _firstCurrency;
                 return true;
             }
 
@@ -141,22 +139,17 @@ namespace CurrencyManager
             if (string.Equals(initialCurrency, targetCurrency, StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException(string.Format("Initial currency have to be different from target change currency. Initial:{0}. Target:{1}.", initialCurrency, targetCurrency));
 
-            return new ExchangeCurrency
-            {
-                InitialCurrency = initialCurrency,
-                TargetCurrency = targetCurrency,
-                Rate = ExchangeRate.Create(rate)
-            };
+            return new ExchangeCurrency(initialCurrency, targetCurrency, ExchangeRate.Create(rate));
         }
 
-        private bool IsEqualToInitialeCurrency(string currency)
+        private bool IsEqualToFirstCurrency(string currency)
         {
-            return InitialCurrency.Equals(currency, StringComparison.OrdinalIgnoreCase);
+            return _firstCurrency.Equals(currency, StringComparison.OrdinalIgnoreCase);
         }
 
-        private bool IsEqualToTargetCurrency(string currency)
+        private bool IsEqualToSecondCurrency(string currency)
         {
-            return TargetCurrency.Equals(currency, StringComparison.OrdinalIgnoreCase);
+            return _secondCurrency.Equals(currency, StringComparison.OrdinalIgnoreCase);
         }
     }
 }
