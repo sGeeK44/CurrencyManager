@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CurrencyManager.UnitTest
+﻿namespace CurrencyManager.UnitTest
 {
     public class ExchangeRateStub : IExchangeRate
     {
