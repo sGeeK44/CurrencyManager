@@ -5,7 +5,7 @@ namespace CurrencyManager
     /// <summary>
     /// Represent a change which need intermediate change
     /// </summary>
-    public class ThroughExchange : IExchangeChain
+    public class ThroughExchange : ExchangeBase
     {
         private IExchangeCurrency _throughExchange;
         private IExchangeChain _nextExchange;
@@ -17,7 +17,7 @@ namespace CurrencyManager
         /// </summary>
         /// <param name="valueToChange">Amount of money to change</param>
         /// <returns>Changed money</returns>
-        public double Change(double valueToChange)
+        public override double Change(double valueToChange)
         {
             var intermediateChange = _throughExchange.Change(_initialCurrency, _intermediateCurrency, valueToChange);
             return _nextExchange.Change(intermediateChange);
@@ -26,12 +26,8 @@ namespace CurrencyManager
         /// <summary>
         /// Get number of intermediate change needed to complete change
         /// </summary>
-        public int CountIntermediateChangeNeeded()
-        {
-            return 1 + _nextExchange.CountIntermediateChangeNeeded();
-        }
-
-
+        public override int CountPartInvolve { get { return 1 + _nextExchange.CountPartInvolve; } }
+        
         /// <summary>
         /// Create a new instance of ThroughExchange
         /// </summary>
@@ -40,7 +36,7 @@ namespace CurrencyManager
         /// <param name="throughExchange"></param>
         /// <param name="availableExchangeExcludeCurrent">All avalaible exchange currency to chain with current</param>
         /// <returns>Return new Direct Exchange</returns>
-        internal static IExchangeChain Create(IExchangeCurrency throughExchange, string initialCurrency, string targetCurrency, List<IExchangeCurrency> availableExchangeExcludeCurrent)
+        internal static IExchangeChain Create(IExchangeCurrency throughExchange, string initialCurrency, string targetCurrency, IList<IExchangeCurrency> availableExchangeExcludeCurrent)
         {
             string changeTo;
             if (!throughExchange.CanChangeFrom(initialCurrency, out changeTo)) return null;

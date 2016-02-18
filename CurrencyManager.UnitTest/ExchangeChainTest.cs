@@ -82,7 +82,7 @@ namespace CurrencyManager.UnitTest
             var factory = new ExchangeChainFactory(availableExchangeList);
             var exchangeChain = factory.Create(CURRENCY_NAME_1, CURRENCY_NAME_2);
 
-            Assert.AreEqual(1, exchangeChain.CountIntermediateChangeNeeded());
+            Assert.AreEqual(1, exchangeChain.CountPartInvolve);
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace CurrencyManager.UnitTest
             var factory = new ExchangeChainFactory(availableExchangeList);
             var exchangeChain = factory.Create(CURRENCY_NAME_1, CURRENCY_NAME_3);
 
-            Assert.AreEqual(2, exchangeChain.CountIntermediateChangeNeeded());
+            Assert.AreEqual(2, exchangeChain.CountPartInvolve);
         }
 
         [TestMethod]
@@ -108,7 +108,7 @@ namespace CurrencyManager.UnitTest
             var factory = new ExchangeChainFactory(availableExchangeList);
             var exchangeChain = factory.Create(CURRENCY_NAME_1, CURRENCY_NAME_3);
 
-            Assert.AreEqual(2, exchangeChain.CountIntermediateChangeNeeded());
+            Assert.AreEqual(2, exchangeChain.CountPartInvolve);
         }
 
         [TestMethod]
@@ -122,7 +122,7 @@ namespace CurrencyManager.UnitTest
             var factory = new ExchangeChainFactory(availableExchangeList);
             var exchangeChain = factory.Create(CURRENCY_NAME_1, CURRENCY_NAME_4);
 
-            Assert.AreEqual(3, exchangeChain.CountIntermediateChangeNeeded());
+            Assert.AreEqual(3, exchangeChain.CountPartInvolve);
         }
 
         private static IExchangeCurrency CreateIntermediateExchange(string init, string intermediate, string target)

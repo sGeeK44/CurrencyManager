@@ -5,7 +5,7 @@ namespace CurrencyManager
     /// <summary>
     /// Represent a change without need intermediate change
     /// </summary>
-    public class DirectExchange : IExchangeChain
+    public class DirectExchange : ExchangeBase
     {
         private IExchangeCurrency _directExchangeCurrency;
         private string _initialCurrency;
@@ -18,7 +18,7 @@ namespace CurrencyManager
         /// </summary>
         /// <param name="valueToChange">Amount of money to change</param>
         /// <returns>Changed money</returns>
-        public double Change(double valueToChange)
+        public override double Change(double valueToChange)
         {
             return _directExchangeCurrency.Change(_initialCurrency, _targetCurrency, valueToChange);
         }
@@ -26,10 +26,7 @@ namespace CurrencyManager
         /// <summary>
         /// Get number of intermediate change needed to complete change
         /// </summary>
-        public int CountIntermediateChangeNeeded()
-        {
-            return 1;
-        }
+        public override int CountPartInvolve { get { return 1; } }
 
         /// <summary>
         /// Create a new instance of DirectExchange

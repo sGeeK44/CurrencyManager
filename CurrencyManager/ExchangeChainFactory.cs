@@ -30,33 +30,56 @@ namespace CurrencyManager
         /// </summary>
         /// <param name="initialCurrency">Initial currency to change</param>
         /// <param name="targetCurrency">Target currency to change</param>
-        /// <returns>Chain builded</returns>
+        /// <returns>Chain builded if it exist, else null</returns>
+        /// <remarks>Strategy to determine is:<Br/>
+        /// First try to get a ExchangeRate without intermediary change<Br/>
+        /// If it's not possible, then build all available chain and keep the fastest path<Br/>
+        /// If no way null is returned.
+        /// </remarks>
         public IExchangeChain Create(string initialCurrency, string targetCurrency)
         {
             if (string.IsNullOrEmpty(initialCurrency)) throw new ArgumentNullException("initialCurrency");
             if (string.IsNullOrEmpty(targetCurrency)) throw new ArgumentNullException("targetCurrency");
 
-            var directExchange = GetExchangeWhoManagedBothCurrency(initialCurrency, targetCurrency);
+            var directExchange = GetSingleOrDefaultDirectExchange(initialCurrency, targetCurrency);
             if (directExchange != null) return DirectExchange.Create(directExchange, initialCurrency, targetCurrency);
-
-            var throughExchangeList = GetExchangeWhoManagedOnlyOneCurrency(initialCurrency, targetCurrency);
-            if (throughExchangeList.Count == 0) return null;
-
-            IExchangeChain result = null;
-            foreach (var throughExchange in throughExchangeList)
-            {
-                var availableExchangeExcludeCurrent = new List<IExchangeCurrency>(AvailableExchangeCurrency);
-                availableExchangeExcludeCurrent.Remove(throughExchange);
-
-                var newChain = ThroughExchange.Create(throughExchange, initialCurrency, targetCurrency, availableExchangeExcludeCurrent);
-                if (result == null || newChain != null && newChain.CountIntermediateChangeNeeded() < result.CountIntermediateChangeNeeded()) result = newChain;
-            }
-            return result;
+            
+            return GetFastestChain(initialCurrency, targetCurrency);
         }
 
-        private IExchangeCurrency GetExchangeWhoManagedBothCurrency(string initialCurrency, string targetCurrency)
+        private IExchangeChain GetFastestChain(string initialCurrency, string targetCurrency)
         {
-            return AvailableExchangeCurrency.FirstOrDefault(_ => _.CanChange(initialCurrency, targetCurrency));
+            var availableThroughExchangeList = GetExchangeWhoManagedOnlyOneCurrency(initialCurrency, targetCurrency);
+            if (availableThroughExchangeList.Count == 0) return null;
+
+            return availableThroughExchangeList.Select(_ => CreateNewChain(initialCurrency, targetCurrency, _))
+                                               .Aggregate<IExchangeChain, IExchangeChain>(null, KeepFasterChain);
+        }
+
+        private IExchangeChain CreateNewChain(string initialCurrency, string targetCurrency, IExchangeCurrency potentialThroughExchange)
+        {
+            var availableExchangeExcludeCurrent = CloneAvailableExchangeExcludePotential(potentialThroughExchange);
+            return ThroughExchange.Create(potentialThroughExchange, initialCurrency, targetCurrency, availableExchangeExcludeCurrent);
+        }
+
+        private static IExchangeChain KeepFasterChain(IExchangeChain currenFastestChain, IExchangeChain newChain)
+        {
+            currenFastestChain = currenFastestChain ?? newChain; // First chain available
+            return newChain != null && newChain.IsFasterThan(currenFastestChain)
+                 ? newChain
+                 : currenFastestChain;
+        }
+
+        private List<IExchangeCurrency> CloneAvailableExchangeExcludePotential(IExchangeCurrency potential)
+        {
+            var availableExchangeExcludePotential = new List<IExchangeCurrency>(AvailableExchangeCurrency);
+            availableExchangeExcludePotential.Remove(potential);
+            return availableExchangeExcludePotential;
+        }
+
+        private IExchangeCurrency GetSingleOrDefaultDirectExchange(string initialCurrency, string targetCurrency)
+        {
+            return AvailableExchangeCurrency.SingleOrDefault(_ => _.CanChange(initialCurrency, targetCurrency));
         }
 
         private IList<IExchangeCurrency> GetExchangeWhoManagedOnlyOneCurrency(string initialCurrency, string targetCurrency)
