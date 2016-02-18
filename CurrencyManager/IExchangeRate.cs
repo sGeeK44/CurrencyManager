@@ -27,6 +27,6 @@
         /// </summary>
         /// <param name="valueToChange">Amount of money to change back</param>
         /// <returns>Changed back money</returns>
-        double ChangeInvert(double valueToChange);
+        double ChangeBack(double valueToChange);
     }
 }

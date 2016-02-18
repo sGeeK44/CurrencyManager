@@ -36,7 +36,7 @@ namespace CurrencyManager
         /// </summary>
         /// <param name="valueToChange">Amount of money to change back</param>
         /// <returns>Changed back money</returns>
-        public double ChangeInvert(double valueToChange)
+        public double ChangeBack(double valueToChange)
         {
             return Math.Round(valueToChange * InvertRate, EXCHANGE_PRECISION);
         }

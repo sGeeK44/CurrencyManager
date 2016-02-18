@@ -14,7 +14,7 @@ namespace CurrencyManager.UnitTest
             return ChangeResult;
         }
 
-        public double ChangeInvert(double valueToChange)
+        public double ChangeBack(double valueToChange)
         {
             return ChangeBackResult;
         }

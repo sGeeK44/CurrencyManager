@@ -37,7 +37,7 @@ namespace CurrencyManager.UnitTest
         {
             var exchangeRate = ExchangeRate.Create(0.9661);
 
-            var exchangeValue = exchangeRate.ChangeInvert(662.9150);
+            var exchangeValue = exchangeRate.ChangeBack(662.9150);
 
             Assert.AreEqual(686.1833, exchangeValue);
         }
