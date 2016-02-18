@@ -51,6 +51,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BankTest.cs" />
+    <Compile Include="ExchangeChainTest.cs" />
+    <Compile Include="ExchangeCurrencyTest.cs" />
+    <Compile Include="ExchangeCurrencyStub.cs" />
     <Compile Include="ExchangeRateStub.cs" />
     <Compile Include="ExchangeRateTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

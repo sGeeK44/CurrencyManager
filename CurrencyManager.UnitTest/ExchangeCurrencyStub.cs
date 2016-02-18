@@ -9,6 +9,7 @@
         public bool CanChangeResult { get; set; }
         public string CanChangeFromOutParam { get; set; }
         public bool CanChangeFromResult { get; set; }
+        public bool CanOnlyMakeIntermediateChangeResult { get; set; }
 
         public double Change(string initialCurrency, string targetCurrency, double valueToChange)
         {
@@ -26,5 +27,19 @@
             return CanChangeFromResult;
         }
 
+        public bool CanOnlyMakeIntermediateChange(string initialCurrency, string targetCurrency)
+        {
+            return CanOnlyMakeIntermediateChangeResult;
+        }
+
+        public static ExchangeCurrencyStub CreateExchangeWichManageOnlyBothCurrency()
+        {
+            return new ExchangeCurrencyStub { CanChangeResult = true, CanChangeFromResult = true };
+        }
+
+        public static ExchangeCurrencyStub CreateExchangeWichManageOnlyOneCurrency()
+        {
+            return new ExchangeCurrencyStub { CanOnlyMakeIntermediateChangeResult = true };
+        }
     }
 }

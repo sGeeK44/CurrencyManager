@@ -102,6 +102,21 @@ namespace CurrencyManager
         }
 
         /// <summary>
+        /// Indicate if current exchange rate can only change initial currency to another target (not requested)
+        /// </summary>
+        /// <param name="initialCurrency">Initial currency to change</param>
+        /// <param name="targetCurrency">Target currency to wanted</param>
+        /// <returns>True if it can only make intermediate, false else</returns>
+        public bool CanOnlyMakeIntermediateChange(string initialCurrency, string targetCurrency)
+        {
+            string changeTo;
+            if (CanChange(initialCurrency, targetCurrency)) return false;
+            if (CanChangeFrom(initialCurrency, out changeTo)) return true;
+            if (CanChangeFrom(targetCurrency, out changeTo)) return true;
+            return false;
+        }
+
+        /// <summary>
         /// Change money with current rate
         /// </summary>
         /// <param name="initialCurrency">Initial currency to change</param>

@@ -37,8 +37,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bank.cs" />
+    <Compile Include="ExchangeChainFactory.cs" />
+    <Compile Include="DirectExchangeChain.cs" />
+    <Compile Include="IExchangeCurrency.cs" />
+    <Compile Include="ExchangeCurrency.cs" />
     <Compile Include="ExchangeRate.cs" />
     <Compile Include="IExchangeRate.cs" />
+    <Compile Include="ExchangeChain.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
