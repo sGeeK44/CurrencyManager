@@ -15,7 +15,7 @@ namespace CurrencyManager.UnitTest
         {
             var bank = new Bank();
 
-            Assert.IsNotNull(bank.AvailableExchangeRate);
+            Assert.IsNotNull(bank.AvailableExchangeCurrency);
         }
 
         [TestMethod]
@@ -23,7 +23,7 @@ namespace CurrencyManager.UnitTest
         {
             var bank = new Bank();
 
-            Assert.AreEqual(0, bank.AvailableExchangeRate.Count);
+            Assert.AreEqual(0, bank.AvailableExchangeCurrency.Count);
         }
 
         [TestMethod]
@@ -31,20 +31,20 @@ namespace CurrencyManager.UnitTest
         {
             var bank = new Bank();
             
-            bank.AddExchangeRate(new ExchangeRateStub());
+            bank.AddExchangeRate(new ExchangeCurrencyStub());
 
-            Assert.AreEqual(1, bank.AvailableExchangeRate.Count);
+            Assert.AreEqual(1, bank.AvailableExchangeCurrency.Count);
         }
 
         [TestMethod]
         public void AddExchangeRate_ExistingExchangeRate_ShouldIgnore()
         {
             var bank = new Bank();
-            var exchangeRate = new ExchangeRateStub();
+            var exchangeRate = new ExchangeCurrencyStub();
             bank.AddExchangeRate(exchangeRate);
             bank.AddExchangeRate(exchangeRate);
 
-            Assert.AreEqual(1, bank.AvailableExchangeRate.Count);
+            Assert.AreEqual(1, bank.AvailableExchangeCurrency.Count);
         }
 
         [TestMethod]
@@ -60,7 +60,7 @@ namespace CurrencyManager.UnitTest
         public void Change_ExchangeRatePresentButComeFromNotCorrespond_ShouldThrowNotSuportedException()
         {
             var bank = new Bank();
-            var exchangeRate = new ExchangeRateStub();
+            var exchangeRate = new ExchangeCurrencyStub();
             bank.AddExchangeRate(exchangeRate);
 
             bank.Change(null, null, 0);
@@ -68,10 +68,10 @@ namespace CurrencyManager.UnitTest
 
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
-        public void Change_ExchangeRatePresentButGoToNotCorrespond_ShouldThrowNotSuportedException()
+        public void Change_ExchangeCurrencyPresentCanNotExchangeToTarget_ShouldThrowNotSuportedException()
         {
             var bank = new Bank();
-            var exchangeRate = new ExchangeRateStub { IsManagedInitialeCurrencyResult = true };
+            var exchangeRate = new ExchangeCurrencyStub { CanChangeFromResult = false };
             bank.AddExchangeRate(exchangeRate);
 
             bank.Change(null, null, 0);
@@ -82,10 +82,9 @@ namespace CurrencyManager.UnitTest
         {
             const int expectedChangeResult = 59033;
             var bank = new Bank();
-            var exchangeRate = new ExchangeRateStub
+            var exchangeRate = new ExchangeCurrencyStub
             {
-                IsManagedInitialeCurrencyResult = true,
-                IsManagedTargetCurrencyResult = true,
+                CanChangeResult = true,
                 ChangeResult = 686.1833 * 86.0305
             };
             bank.AddExchangeRate(exchangeRate);

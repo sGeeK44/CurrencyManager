@@ -9,50 +9,42 @@ namespace CurrencyManager
     /// </summary>
     public class Bank
     {
-        private readonly List<IExchangeRate> _availableExchangeRateList = new List<IExchangeRate>();
+        private readonly List<IExchangeCurrency> _availableExchangeCurrencyList = new List<IExchangeCurrency>();
         
         /// <summary>
-        /// Add a exchange rate on available exchange rate pool
+        /// Add a exchange currency on available exchange currency pool
         /// </summary>
-        /// <param name="exchangeRate">New exchange rate.</param>
-        public void AddExchangeRate(IExchangeRate exchangeRate)
+        /// <param name="exchangeCurrency">New exchange currency</param>
+        public void AddExchangeRate(IExchangeCurrency exchangeCurrency)
         {
-            if (_availableExchangeRateList.Contains(exchangeRate)) return;
+            if (_availableExchangeCurrencyList.Contains(exchangeCurrency)) return;
 
-            _availableExchangeRateList.Add(exchangeRate);
+            _availableExchangeCurrencyList.Add(exchangeCurrency);
         }
 
         /// <summary>
-        /// Get all available exchange rate
+        /// Get all available exchange currency
         /// </summary>
-        public IList<IExchangeRate> AvailableExchangeRate { get { return _availableExchangeRateList; } }
+        public IList<IExchangeCurrency> AvailableExchangeCurrency { get { return _availableExchangeCurrencyList; } }
 
         /// <summary>
         /// Change money with current rate
         /// </summary>
-        /// <param name="fromCurrency">Name of initial currency of a change</param>
+        /// <param name="initialCurrency">Name of initial currency of a change</param>
         /// <param name="toCurrency">Name target currency of a change</param>
         /// <param name="amount">Amount of money to change</param>
         /// <returns>Changed money</returns>
-        public int Change(string fromCurrency, string toCurrency, int amount)
+        public int Change(string initialCurrency, string toCurrency, int amount)
         {
-            var availableExchangeForInitial = GetAvailableExchangeRateForInitialCurrency(fromCurrency);
-            if (availableExchangeForInitial.Count() == 0) throw new NotSupportedException(string.Format("None exchange rate are available to change this initial currency. Currency:{0}.", fromCurrency));
+            var exchangeCurrency = GetExchangeRate(initialCurrency, toCurrency);
+            if (exchangeCurrency == null) throw new NotSupportedException(string.Format("Bank can not change from {0} to {1}. None exchange currency available.", initialCurrency, toCurrency));
 
-            var exchangeRate = GetExchangeRateForTargetCurrency(availableExchangeForInitial, toCurrency);
-            if (exchangeRate == null) throw new NotSupportedException(string.Format("None exchange rate are available to change this target currency. Currency:{0}.", toCurrency));
-
-            return (int) Math.Round(exchangeRate.Change(amount));
+            return (int)Math.Round(exchangeCurrency.Change(initialCurrency, toCurrency, amount));
         }
 
-        private IEnumerable<IExchangeRate> GetAvailableExchangeRateForInitialCurrency(string initialCurrency)
+        private IExchangeCurrency GetExchangeRate(string initialCurrency, string targetCurrency)
         {
-            return AvailableExchangeRate.Where(_ => _.IsManagedInitialeCurrency(initialCurrency));
-        }
-
-        private IExchangeRate GetExchangeRateForTargetCurrency(IEnumerable<IExchangeRate> availableExchangeRate, string targetCurrency)
-        {
-            return availableExchangeRate.FirstOrDefault(_ => _.IsManagedTargetCurrency(targetCurrency));
+            return AvailableExchangeCurrency.FirstOrDefault(_ => _.CanChange(initialCurrency, targetCurrency));
         }
     }
 }
