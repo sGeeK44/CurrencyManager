@@ -58,6 +58,18 @@ namespace CurrencyManager.UnitTest
         }
 
         [TestMethod]
+        public void Create_AvailableListCanNotChange_SouldReturnNullChain()
+        {
+            var availableExchangeList = new List<IExchangeCurrency>
+            {
+                ExchangeCurrencyStub.CreateExchangeWichCanDoNothing()
+            };
+
+            var factory = new ExchangeChainFactory(availableExchangeList);
+            Assert.IsNull(factory.Create(CURRENCY_NAME_1, CURRENCY_NAME_2));
+        }
+
+        [TestMethod]
         public void Create_AvailableListContainsOneElementCanChangeDirectly_ChangeInvolveShouldBeEqualToOne()
         {
             var availableExchangeList = new List<IExchangeCurrency>
@@ -68,7 +80,7 @@ namespace CurrencyManager.UnitTest
             var factory = new ExchangeChainFactory(availableExchangeList);
             var exchangeChain = factory.Create(CURRENCY_NAME_1, CURRENCY_NAME_2);
 
-            Assert.AreEqual(1, exchangeChain.CountIntermediateChangeNeeded(CURRENCY_NAME_1, CURRENCY_NAME_2));
+            Assert.AreEqual(1, exchangeChain.CountIntermediateChangeNeeded());
         }
     }
 }

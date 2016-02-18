@@ -21,12 +21,20 @@ namespace CurrencyManager
             if (string.IsNullOrEmpty(targetCurrency)) throw new ArgumentNullException("targetCurrency");
 
             var directExchange = GetExchangeWhoManagedBothCurrency(initialCurrency, targetCurrency);
-            if (directExchange != null) return DirectExchange.Create(directExchange);
+            if (directExchange != null) return DirectExchange.Create(directExchange, initialCurrency, targetCurrency);
 
-            var intermediatePossibleExchange = GetExchangeWhoManagedOnlyOneCurrency(initialCurrency, targetCurrency);
-            if (intermediatePossibleExchange.Count == 0) return null;
-            
-            return null;
+            var throughExchangeList = GetExchangeWhoManagedOnlyOneCurrency(initialCurrency, targetCurrency);
+            if (throughExchangeList.Count == 0) return null;
+
+            IExchangeChain result = null;
+            foreach (var throughExchange in throughExchangeList)
+            {
+                var availableExchangeExcludeCurrent = new List<IExchangeCurrency>(AvailableExchangeCurrency);
+                availableExchangeExcludeCurrent.Remove(throughExchange);
+
+                result = ThroughExchange.Create(throughExchange, initialCurrency, targetCurrency, availableExchangeExcludeCurrent);
+            }
+            return result;
         }
 
         private IExchangeCurrency GetExchangeWhoManagedBothCurrency(string initialCurrency, string targetCurrency)

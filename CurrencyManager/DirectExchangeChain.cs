@@ -8,20 +8,26 @@ namespace CurrencyManager
     public class DirectExchange : IExchangeChain
     {
         private IExchangeCurrency _directExchangeCurrency;
+        private string _initialCurrency;
+        private string _targetCurrency;
 
         private DirectExchange() { }
         
         /// <summary>
         /// Create a new instance of DirectExchange
         /// </summary>
+        /// <param name="initialCurrency">Initial currency to change</param>
+        /// <param name="targetCurrency">Target currency to expected</param>
         /// <param name="directExchangeCurrency"></param>
         /// <returns></returns>
-        public static DirectExchange Create(IExchangeCurrency directExchangeCurrency)
+        public static DirectExchange Create(IExchangeCurrency directExchangeCurrency, string initialCurrency, string targetCurrency)
         {
             if (directExchangeCurrency == null) throw new ArgumentNullException("directExchangeCurrency");
 
             return new DirectExchange
             {
+                _initialCurrency = initialCurrency,
+                _targetCurrency = targetCurrency,
                 _directExchangeCurrency = directExchangeCurrency
             };
         }
@@ -29,21 +35,17 @@ namespace CurrencyManager
         /// <summary>
         /// Change money with current rate
         /// </summary>
-        /// <param name="initialCurrency">Initial currency to change</param>
-        /// <param name="targetCurrency">Target currency to expected</param>
         /// <param name="valueToChange">Amount of money to change</param>
         /// <returns>Changed money</returns>
-        public double Change(string initialCurrency, string targetCurrency, int valueToChange)
+        public double Change(double valueToChange)
         {
-            return _directExchangeCurrency.Change(initialCurrency, targetCurrency, valueToChange);
+            return _directExchangeCurrency.Change(_initialCurrency, _targetCurrency, valueToChange);
         }
 
         /// <summary>
         /// Get number of intermediate change needed to complete change
         /// </summary>
-        /// <param name="initialCurrency">Initial currency to change</param>
-        /// <param name="targetCurrency">Target currency to expected</param>
-        public int CountIntermediateChangeNeeded(string initialCurrency, string targetCurrency)
+        public int CountIntermediateChangeNeeded()
         {
             return 1;
         }
