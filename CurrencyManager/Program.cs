@@ -5,15 +5,13 @@ using System.Text;
 
 namespace CurrencyManager
 {
-    class Program
+    public class Program
     {
-        public static int Amount { get; set; }
+        private static int Amount { get; set; }
+        private static string TargetCurrency { get; set; }
+        private static string InitialCurrency { get; set; }
 
-        public static string TargetCurrency { get; set; }
-
-        public static string InitialCurrency { get; set; }
-
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             const string inputs = @"EUR;550;JPY
 6
@@ -29,11 +27,11 @@ JPY;INR;0.6571";
             Console.ReadKey();
         }
 
-        static int Change(TextReader inputs)
+        private static int Change(TextReader inputs)
         {
             SetRequestChange(inputs);
             var bank = CreateBankExchange(inputs);
-            return bank.Change("EUR", "JPY", 550);
+            return bank.Change(InitialCurrency, TargetCurrency, Amount);
         }
 
         private static Bank CreateBankExchange(TextReader inputs)
