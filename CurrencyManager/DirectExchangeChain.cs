@@ -46,5 +46,17 @@ namespace CurrencyManager
                 _directExchangeCurrency = directExchangeCurrency
             };
         }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override string ToString()
+        {
+            return string.Format("{0};{1}", _initialCurrency, _targetCurrency);
+        }
     }
 }

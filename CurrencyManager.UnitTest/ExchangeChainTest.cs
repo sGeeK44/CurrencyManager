@@ -125,6 +125,24 @@ namespace CurrencyManager.UnitTest
             Assert.AreEqual(3, exchangeChain.CountPartInvolve);
         }
 
+        [TestMethod]
+        public void ToString_DirectExchange_ShoudReturnPath()
+        {
+            var directExchange = DirectExchange.Create(new ExchangeCurrencyStub(), "INI", "TAR");
+            Assert.AreEqual("INI;TAR", directExchange.ToString());
+        }
+
+        [TestMethod]
+        public void ToString_ThroughExchange_ShoudReturnPath()
+        {
+            var directExchange = ThroughExchange.Create(ExchangeCurrency.Create("INI", "INT", 1), "INI", "TAR", new List<IExchangeCurrency>()
+            {
+                ExchangeCurrency.Create("INT", "TAR", 1),
+            });
+
+            Assert.AreEqual("INI;INT;TAR", directExchange.ToString());
+        }
+
         private static IExchangeCurrency CreateIntermediateExchange(string init, string intermediate, string target)
         {
             var mock = new Mock<IExchangeCurrency>();

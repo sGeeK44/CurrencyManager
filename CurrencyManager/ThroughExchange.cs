@@ -36,7 +36,7 @@ namespace CurrencyManager
         /// <param name="throughExchange"></param>
         /// <param name="availableExchangeExcludeCurrent">All avalaible exchange currency to chain with current</param>
         /// <returns>Return new Direct Exchange</returns>
-        internal static IExchangeChain Create(IExchangeCurrency throughExchange, string initialCurrency, string targetCurrency, IList<IExchangeCurrency> availableExchangeExcludeCurrent)
+        public static IExchangeChain Create(IExchangeCurrency throughExchange, string initialCurrency, string targetCurrency, IList<IExchangeCurrency> availableExchangeExcludeCurrent)
         {
             string changeTo;
             if (!throughExchange.CanChangeFrom(initialCurrency, out changeTo)) return null;
@@ -52,6 +52,18 @@ namespace CurrencyManager
                 _throughExchange = throughExchange,
                 _nextExchange = nextExchange
             };
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override string ToString()
+        {
+            return string.Format("{0};{1}", _initialCurrency, _nextExchange);
         }
     }
 }
