@@ -41,7 +41,7 @@ namespace CurrencyManager
             if (string.IsNullOrEmpty(initialCurrency)) throw new ArgumentNullException("initialCurrency");
             if (string.IsNullOrEmpty(targetCurrency)) throw new ArgumentNullException("targetCurrency");
 
-            var directExchange = GetSingleOrDefaultDirectExchange(initialCurrency, targetCurrency);
+            var directExchange = GetFirstOrDefaultDirectExchange(initialCurrency, targetCurrency);
             if (directExchange != null) return DirectExchange.Create(directExchange, initialCurrency, targetCurrency);
             
             return GetFastestChain(initialCurrency, targetCurrency);
@@ -77,9 +77,9 @@ namespace CurrencyManager
             return availableExchangeExcludePotential;
         }
 
-        private IExchangeCurrency GetSingleOrDefaultDirectExchange(string initialCurrency, string targetCurrency)
+        private IExchangeCurrency GetFirstOrDefaultDirectExchange(string initialCurrency, string targetCurrency)
         {
-            return AvailableExchangeCurrency.SingleOrDefault(_ => _.CanChange(initialCurrency, targetCurrency));
+            return AvailableExchangeCurrency.FirstOrDefault(_ => _.CanChange(initialCurrency, targetCurrency));
         }
 
         private IList<IExchangeCurrency> GetExchangeWhoManagedOnlyOneCurrency(string initialCurrency, string targetCurrency)

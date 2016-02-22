@@ -143,6 +143,40 @@ namespace CurrencyManager.UnitTest
             Assert.AreEqual("INI;INT;TAR", directExchange.ToString());
         }
 
+        [TestMethod]
+        public void FactoryCreate_Loop_ShouldReturnRightPath()
+        {
+            var availableExchangeCurrency = new List<IExchangeCurrency>
+            {
+                ExchangeCurrency.Create("EUR", "USD", 1),
+                ExchangeCurrency.Create("USD", "LIV", 1),
+                ExchangeCurrency.Create("USD", "CHF", 1),
+                ExchangeCurrency.Create("USD", "AUD", 1),
+                ExchangeCurrency.Create("CHF", "LIV", 1),
+                ExchangeCurrency.Create("CHF", "AUD", 1),
+                ExchangeCurrency.Create("CHF", "AUD", 1),
+                ExchangeCurrency.Create("LIV", "AUD", 1),
+                ExchangeCurrency.Create("JPY", "LIV", 1)
+            };
+
+            var chainFactory = new ExchangeChainFactory(availableExchangeCurrency);
+            Assert.AreEqual("EUR;USD;LIV;JPY", chainFactory.Create("EUR", "JPY").ToString());
+        }
+
+        [TestMethod]
+        public void FactoryCreate_SameCurrencyTwice_ShouldReturnRightPath()
+        {
+            var availableExchangeCurrency = new List<IExchangeCurrency>
+            {
+                ExchangeCurrency.Create("AAA", "BBB", 1),
+                ExchangeCurrency.Create("BBB", "CCC", 1),
+                ExchangeCurrency.Create("CCC", "BBB", 1)
+            };
+
+            var chainFactory = new ExchangeChainFactory(availableExchangeCurrency);
+            Assert.AreEqual("AAA;BBB;CCC", chainFactory.Create("AAA", "CCC").ToString());
+        }
+
         private static IExchangeCurrency CreateIntermediateExchange(string init, string intermediate, string target)
         {
             var mock = new Mock<IExchangeCurrency>();
